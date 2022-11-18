@@ -9,7 +9,7 @@ export default function ItemList({items, handleClick}) {
         <div className='row'>
             {
                 items.map(item=>(
-                <div key={item.id} className='col-md-3'>
+                <div key={item.id} className='col-md-3' style={{padding: "10px"}}>
                     <Item handleClick={(id)=>handleClick(id)} item={item}/>
                 </div>))
             }
