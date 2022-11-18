@@ -1,0 +1,91 @@
+{
+    "items":
+    [
+        {
+            "id": 1,
+            "name": "Apples",
+            "category": "Fruit",
+            "price": 2.00,
+            "description": "6 pack"
+        },
+
+        {
+            "id": 2,
+            "name": "Bananas",
+            "category": "Fruit",
+            "price": 3.00,
+            "description": "6 pack"
+        },
+        {
+            "id": 3,
+            "name": "Spinach",
+            "category": "Veg",
+            "price": 1.00,
+            "description": "500g"
+        },
+        {
+            "id": 4,
+            "name": "Garlic",
+            "category": "Veg",
+            "price": 0.50,
+            "description": "1 bulb"
+        },
+        {
+            "id": 5,
+            "name": "Potatoes",
+            "category": "Veg",
+            "price": 3.00,
+            "description": "1kg"
+        },
+        {
+            "id": 6,
+            "name": "Milk",
+            "category": "Dairy",
+            "price": 1.50,
+            "description": "1L"
+        },
+        {
+            "id": 7,
+            "name": "Butter",
+            "category": "Dairy",
+            "price": 1.90,
+            "description": "500g"
+        },
+        {
+            "id": 8,
+            "name": "Cinnamon",
+            "category": "Herbs & Spices",
+            "price": 11.00,
+            "description": "100g"
+        },
+        {
+            "id": 9,
+            "name": "Thyme",
+            "category": "Herbs & Spices",
+            "price": 1.00,
+            "description": "100g"
+        },
+        {
+            "id": 10,
+            "name": "SAlt & Vinegar Crisps",
+            "category": "Snacks",
+            "price": 3.00,
+            "description": "12 pack"
+        },
+        {
+            "id": 11,
+            "name": "80% Dark Chocolate",
+            "category": "Snacks",
+            "price": 1.80,
+            "description": "150g"
+        },
+        {
+            "id": 12,
+            "name": "Dried Mango",
+            "category": "Snacks",
+            "price": 3.80,
+            "description": "200g"
+        }
+
+    ]
+}
