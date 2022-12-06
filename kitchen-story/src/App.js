@@ -30,6 +30,19 @@ function App() {
     }
   };
 
+  const removefromBasket = (item) => {
+    const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
+    if (itemExists.qty === 1) {
+      setBasketItems(basketItems.filter((x) => x.id !== item.id));
+    } else {
+      setBasketItems(
+        basketItems.map((basketItem) =>
+        basketItem.id === item.id ? { ...itemExists, qty: itemExists.qty - 1 } : basketItem
+        )
+      );
+    }
+  }
+
   return (
     <div className="App">
       <ItemList items={items} addToBasket={addToBasket}/>
@@ -37,6 +50,7 @@ function App() {
           items={items}
           basketItems={basketItems}
           addToBasket={addToBasket}
+          removefromBasket={removefromBasket}
         ></Basket>
     </div>
   );

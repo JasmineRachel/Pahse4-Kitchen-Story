@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Basket(props) {
-    const {basketItems, addToBasket} = props;
+    const {basketItems, addToBasket, removefromBasket} = props;
     const totalPrice = basketItems.reduce((a, c) => a + c.qty * c.price, 0);
 
   return (
@@ -16,7 +16,7 @@ export default function Basket(props) {
             <div key={item.id} className="row">
                 <div className="col=2"> {item.name}</div>
                 <div className="col-2"> 
-                    <button className="remove"> - </button>
+                    <button className="remove" onClick={()=>removefromBasket(item)}> - </button>
                     <button onClick={()=>addToBasket(item)} className="add"> + </button>
                 </div>
                 <div className="col=2 text-right"> 
@@ -26,7 +26,7 @@ export default function Basket(props) {
             
 
             ))}
-            {basketItems.length !== 0 && (
+            {basketItems.length > 0 && (
                 <>
                 <hr></hr>
                 <div className="row">
@@ -34,7 +34,7 @@ export default function Basket(props) {
                     <div className="col-1 text-right">${totalPrice.toFixed(2)}</div>
                 </div>
                 <div className="row">
-                    <button onClick={() => alert('Implement Checkout!')}>
+                    <button onClick={() => alert('Time to checkout!')}>
                         Checkout
                     </button>
                 </div>
