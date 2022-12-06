@@ -15,24 +15,17 @@ function App() {
     .then(data=>setItems(data)) //
   }, [])
 
-  // const handleClick = (id=>{
-  //   console.log('id in App.js' +id );
-  //   setItem(items.find(item=>item.id===id));
-  //   // setShow(true)
-  //   console.log(item.name);
-  // })
-
   const addToBasket = (item) => {
-    console.log("Basket items" + basketItems)
-    const exist = basketItems.find((basketItem) => basketItem.id === item.id);
-    // const exist = cartItems.find((x) => x.id === product.id);
-    if (exist) {
+    console.log("Basket items " + basketItems)
+    const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
+  
+    if (itemExists) {
       setBasketItems(
         basketItems.map(basketItem =>
-        basketItem.id === item.id ? { ...exist, qty: exist.qty + 1 } : basketItem
+        basketItem.id === item.id ? { ...itemExists, qty: itemExists.qty + 1 } : basketItem
         )
       );
-      console.log(item + "added to basket")
+      console.log(item.name + " added to basket")
     } else {
       setBasketItems([...basketItems, { ...item, qty: 1 }]);
     }
