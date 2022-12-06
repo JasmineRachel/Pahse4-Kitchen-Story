@@ -1,7 +1,6 @@
 import './App.css';
 // import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Item from './components/Item.js';
 import ItemList from './components/ItemList.js';
 import Basket from './components/Basket.js';
 
