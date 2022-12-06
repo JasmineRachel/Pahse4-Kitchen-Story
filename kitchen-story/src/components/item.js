@@ -2,6 +2,9 @@ import React from 'react'
 
 export default function Item(props) {
     let {id, name, price, category, description, img } = props.item
+    // let {items.id, items} = things
+    // let addToBasket = props.addToBasket
+    const {item, addToBasket} = props;
   return (
     <div className='card' style={{width: "18rem"}}>
         <div className="card-body">
@@ -10,7 +13,7 @@ export default function Item(props) {
             <h5 className='card-subtitle mb-2 text-muted'>£{price}</h5>
             <h6 className='card-subtitle mb-2 text-muted'>{category} </h6>
             <p className="card-text"> {description}</p>
-            <button type="button" className="btn btn-primary">Add to basket</button>
+            <button type="button" className="btn btn-primary"  onClick={()=>addToBasket(item)}>Add to basket</button>
         </div>
         
     </div>
