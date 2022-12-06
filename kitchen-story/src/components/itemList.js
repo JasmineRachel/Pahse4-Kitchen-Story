@@ -2,13 +2,10 @@ import React from 'react'
 import Item from './Item';
 
 export default function ItemList({items, addToBasket}) {
-  // console.log(props)
-  // const {items, addToBasket } = props
   return (
     <div className='container'>
         <h1> Please select your items</h1>
-        {/* {console.log("items:")}
-        {console.log(Array.isArray(items))} */}
+
         <div className='row'>
             {
                 items.map(item=>(

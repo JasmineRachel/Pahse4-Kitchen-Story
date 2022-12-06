@@ -6,8 +6,8 @@ import Basket from './components/Basket.js';
 
 function App() {
   const [items, setItems] = useState([])
-  // const [item, setItem] = useState({})
   const [basketItems, setBasketItems] = useState([])
+  
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
     .then(resp=>resp.json())

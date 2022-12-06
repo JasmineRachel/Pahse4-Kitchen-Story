@@ -1,9 +1,7 @@
 import React from 'react'
 
 export default function Item(props) {
-    let {id, name, price, category, description, img } = props.item
-    // let {items.id, items} = things
-    // let addToBasket = props.addToBasket
+    let {name, price, category, description, img } = props.item
     const {item, addToBasket} = props;
   return (
     <div className='card' style={{width: "18rem"}}>
