@@ -7,7 +7,7 @@ import Basket from './components/Basket.js';
 function App() {
   const [items, setItems] = useState([])
   const [basketItems, setBasketItems] = useState([])
-  
+
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
     .then(resp=>resp.json())
@@ -44,14 +44,18 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <ItemList items={items} addToBasket={addToBasket}/>
-      <Basket
-          items={items}
-          basketItems={basketItems}
-          addToBasket={addToBasket}
-          removefromBasket={removefromBasket}
+    <div className="container text-center">
+      <div className="row">
+        <ItemList items={items} addToBasket={addToBasket}/>
+        <Basket
+            items={items}
+            basketItems={basketItems}
+            addToBasket={addToBasket}
+            removefromBasket={removefromBasket}
         ></Basket>
+
+      </div>
+      
     </div>
   );
 }
