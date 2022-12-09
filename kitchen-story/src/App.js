@@ -1,8 +1,8 @@
 import './App.css';
-// import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
-import Basket from './components/Basket.js';
+import Admin from './components/Admin.js';
 
 function App() {
   const [items, setItems] = useState([])
@@ -30,7 +30,7 @@ function App() {
     }
   };
 
-  const removefromBasket = (item) => {
+  const removeFromBasket = (item) => {
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
     if (itemExists.qty === 1) {
       setBasketItems(basketItems.filter((x) => x.id !== item.id));
@@ -45,16 +45,20 @@ function App() {
 
   return (
     <div className="container text-center">
-      <div className="row">
-        <ItemList items={items} addToBasket={addToBasket}/>
-        <Basket
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
+            <Route path="admin" element={<Admin/>}/>
+
+          </Routes>
+        
+        </BrowserRouter>
+        {/* <Basket
             items={items}
             basketItems={basketItems}
             addToBasket={addToBasket}
-            removefromBasket={removefromBasket}
-        ></Basket>
-
-      </div>
+            removefromBasket={removeFromBasket}
+        ></Basket> */}
       
     </div>
   );
