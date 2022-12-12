@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
 import AdminLogin from './components/AdminLogin.js';
+import AdminDashboard from './components/AdminDashboard.js';
 
 function App() {
   const [items, setItems] = useState([])
@@ -60,7 +61,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
-            <Route path="admin" element={<AdminLogin users={users} />}/>
+            <Route path="admin-login" element={<AdminLogin users={users} />}/>
+            <Route path="admin-dashboard" element={<AdminDashboard items={items}  />}/>
 
           </Routes>
         

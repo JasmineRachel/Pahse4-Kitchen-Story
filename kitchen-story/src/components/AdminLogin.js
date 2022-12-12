@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function AdminLogin(props) {
-    const {users} = props
+    // const {users} = props
   return (
     <div className="container" style={{width: "500px"}}>
         <h2>Admin-login</h2>
@@ -21,7 +21,7 @@ export default function AdminLogin(props) {
             </div>
         </div>
         <div className="mb-3">
-            <button className="btn btn-primary" type="submit" onClick={()=>login()}>Log in</button>
+            <button className="btn btn-primary" type="submit"> Log in </button>
         </div>
     </div>
     
