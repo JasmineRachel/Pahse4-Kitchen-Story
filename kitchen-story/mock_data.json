@@ -102,6 +102,15 @@
     ],
     "users":
     [
-
+        {
+            "id": 1,
+            "username": "admin",
+            "password": "P@assw0rd"
+        },
+        {
+            "id": 2,
+            "username": "admin2",
+            "password": "P@assw0rd2"
+        }
     ]
 }

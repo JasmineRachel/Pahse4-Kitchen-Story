@@ -2,17 +2,29 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
-import Admin from './components/Admin.js';
+import AdminLogin from './components/AdminLogin.js';
 
 function App() {
   const [items, setItems] = useState([])
   const [basketItems, setBasketItems] = useState([])
+  const [users, setUsers] = useState([])
+  const [username, setUsername] = useState([])
+  // const [password, setPassword] = useState([])
 
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
     .then(resp=>resp.json())
     .then(data=>setItems(data)) //
   }, [])
+
+  useEffect(()=> {
+    fetch(' http://localhost:3000/users')
+    .then(resp=>resp.json())
+    .then(data=>setUsers(data)) //
+    
+    
+  }, [])
+  
 
   const addToBasket = (item) => {
     console.log("Basket items " + basketItems)
@@ -48,7 +60,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
-            <Route path="admin" element={<Admin/>}/>
+            <Route path="admin" element={<AdminLogin users={users} />}/>
 
           </Routes>
         
