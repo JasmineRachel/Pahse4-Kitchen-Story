@@ -86,6 +86,7 @@ export default function AdminDashboard(props) {
                         </div>
                         <div className="mb-3">
                             <label htmlFor="img" className="form-label"> Product image</label>
+                            {/* TODO: figure out how to hard code the image path: '/kitchen-story/public/images/' */}
                             <input 
                                 type="file" className="form-control" id="img" 
                                 name="img" value={img} onChange={newProductHandler} required

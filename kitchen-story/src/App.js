@@ -40,7 +40,7 @@ function App() {
     setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
    
   };
-  
+  // TODO: figure out how to hard code the image path: '/kitchen-story/public/images/'
   const newProductHandler = (e) => {
     // const path =  '/kitchen-story/public/images/';
     // const value ={}
@@ -110,7 +110,7 @@ function App() {
       setBasketItems([...basketItems, { ...item, qty: 1 }]);
     }
   };
-
+  // TODO: use this function or similar logic to remove products in the admin dashboard
   const removeFromBasket = (item) => {
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
     if (itemExists.qty === 1) {
