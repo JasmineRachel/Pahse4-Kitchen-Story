@@ -7,7 +7,7 @@ export default function AdminLogin(props) {
     <div className="container" style={{width: "500px"}}>
         <h2>Admin Login</h2>
         
-        <form onSubmit={submitHandler} action="admin-dashboard" method="get">
+        <form method="get" onSubmit={submitHandler}>
             <div className="mb-3">
                 <label htmlFor="username" className="form-label">Username</label>
                 <input 
@@ -36,3 +36,4 @@ export default function AdminLogin(props) {
     
   )
 }
+

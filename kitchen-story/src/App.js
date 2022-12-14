@@ -1,9 +1,10 @@
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
 import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
+import { render } from '@testing-library/react';
 
 function App() {
   const [items, setItems] = useState([]);
@@ -14,6 +15,7 @@ function App() {
   });
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isShown, setIsShown] = useState(false);
 
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
@@ -53,6 +55,7 @@ function App() {
       toggleIsLoggedIn()
       console.log("login successful")
       console.log("user input", loginInput.username[0], loginInput.password[0])
+      setIsShown(true);
     }else{
       console.log("is logged in? ", isLoggedIn)
       console.log("no entry dude")
@@ -102,22 +105,15 @@ function App() {
       );
     }
   }
-
+  
   return (
     <div className="container text-center">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={
-              <ItemList items={items} basketItems={basketItems} 
-              addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>
-            }/>
-            <Route path="admin-login" element={
-              <AdminLogin loginInput={loginInput} changeHandler={changeHandler} submitHandler={submitHandler}/>
-            }/>
-            <Route path="admin-dashboard" element={
-              isLoggedIn && <AdminDashboard
-              items={items} isLoggedIn={isLoggedIn}/>
-            }/>
+            <Route index element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
+            <Route path="/admin-dashboard" element={<AdminDashboard items={items} isLoggedIn={isLoggedIn}/>}/> 
+            <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} changeHandler={changeHandler} submitHandler={submitHandler}/>}/>
+          
           </Routes>
         </BrowserRouter>
     </div>
