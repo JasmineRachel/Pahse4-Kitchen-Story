@@ -1,28 +1,37 @@
 import React from 'react'
 
 export default function AdminLogin(props) {
-    // const {users} = props
+    const {loginInput, changeHandler, submitHandler} = props
+    const{username, password} = loginInput;
   return (
     <div className="container" style={{width: "500px"}}>
-        <h2>Admin-login</h2>
-
-        <div className="mb-3">
-            <label htmlFor="username" className="form-label">Username</label>
-            <input type="text" className="form-control" id="username" placeholder="Username" name="username" required />
-            <div className="invalid-feedback">
-                Please provide a valid username.
+        <h2>Admin Login</h2>
+        
+        <form onSubmit={submitHandler} action="admin-dashboard" method="get">
+            <div className="mb-3">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input 
+                    type="text" className="form-control" placeholder="Username" name="username" 
+                    value={username} onChange={changeHandler} required
+                />
+                <div className="invalid-feedback">
+                    Please provide a valid username.
+                </div>
             </div>
-        </div>
-        <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Password" name="password"required/>
-            <div className="invalid-feedback">
-                Please provide a valid password.
+            <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input 
+                    type="password" className="form-control" placeholder="Password" 
+                    name="password" value={password} onChange={changeHandler} required
+                />
+                <div className="invalid-feedback">
+                    Please provide a valid password.
+                </div>
             </div>
-        </div>
-        <div className="mb-3">
-            <button className="btn btn-primary" type="submit"> Log in </button>
-        </div>
+            <div className="mb-3">
+                <button className="btn btn-primary" type="submit"> Log in </button>
+            </div>
+        </form>
     </div>
     
   )

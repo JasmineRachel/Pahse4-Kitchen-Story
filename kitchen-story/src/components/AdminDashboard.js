@@ -5,7 +5,7 @@ export default function AdminDashboard(props) {
     const {items} = props;
   return (
     <div className="container">
-        <h2> AdminDashboard </h2>
+        <h2> Admin Dashboard </h2>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Kitchen Story</a>

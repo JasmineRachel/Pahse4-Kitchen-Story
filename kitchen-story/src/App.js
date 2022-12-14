@@ -6,11 +6,14 @@ import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
 
 function App() {
-  const [items, setItems] = useState([])
-  const [basketItems, setBasketItems] = useState([])
-  const [users, setUsers] = useState([])
-  const [username, setUsername] = useState([])
-  // const [password, setPassword] = useState([])
+  const [items, setItems] = useState([]);
+  const [basketItems, setBasketItems] = useState([]);
+  const [loginInput, setLoginInput] = useState({
+    username: " ",
+    password: " "
+  });
+  const [userData, setUserData] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
@@ -21,12 +24,56 @@ function App() {
   useEffect(()=> {
     fetch(' http://localhost:3000/users')
     .then(resp=>resp.json())
-    .then(data=>setUsers(data)) //
-    
-    
+    .then(data=>setUserData(data)) //
   }, [])
-  
+ 
+  const changeHandler = (e) => {
+    setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
+   
+  };
 
+  const toggleIsLoggedIn = () => {
+    setIsLoggedIn(current => !current);
+  };
+
+  useEffect(() => {
+    console.log('is logged in? ', isLoggedIn)
+  },[isLoggedIn]);
+
+  const dataLength = Object.keys(loginInput).length
+
+  const checkUser = () => {
+    const userCheck = userData.map(user => (user.username == loginInput.username[0] && user.password == loginInput.password[0]));
+    const isTrue = (element) => element === true
+    
+    console.log("user check", userCheck)
+    console.log(userCheck.some(isTrue))
+
+    if(userCheck.some(isTrue) === true) {
+      toggleIsLoggedIn()
+      console.log("login successful")
+      console.log("user input", loginInput.username[0], loginInput.password[0])
+    }else{
+      console.log("is logged in? ", isLoggedIn)
+      console.log("no entry dude")
+      console.log("user input", loginInput.username[0], loginInput.password[0])
+    }
+  }
+
+  const submitHandler = e => {
+    e.preventDefault();
+    
+    console.log("userdata1", userData)
+    console.log("userinput1", loginInput)
+
+    if(dataLength === 2){
+      return checkUser(userData);
+    }else{
+      alert("no id, no entry")
+    }
+    
+  }
+ 
   const addToBasket = (item) => {
     console.log("Basket items " + basketItems)
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
@@ -60,20 +107,19 @@ function App() {
     <div className="container text-center">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
-            <Route path="admin-login" element={<AdminLogin users={users} />}/>
-            <Route path="admin-dashboard" element={<AdminDashboard items={items}  />}/>
-
+            <Route path="/" element={
+              <ItemList items={items} basketItems={basketItems} 
+              addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>
+            }/>
+            <Route path="admin-login" element={
+              <AdminLogin loginInput={loginInput} changeHandler={changeHandler} submitHandler={submitHandler}/>
+            }/>
+            <Route path="admin-dashboard" element={
+              isLoggedIn && <AdminDashboard
+              items={items} isLoggedIn={isLoggedIn}/>
+            }/>
           </Routes>
-        
         </BrowserRouter>
-        {/* <Basket
-            items={items}
-            basketItems={basketItems}
-            addToBasket={addToBasket}
-            removefromBasket={removeFromBasket}
-        ></Basket> */}
-      
     </div>
   );
 }
