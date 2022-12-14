@@ -6,7 +6,7 @@
             "name": "Apples",
             "category": "Fruit",
             "price": 2.00,
-            "description": "6 pack",
+            "desc": "6 pack",
             "img": "images/apples.jpeg"
         },
 
@@ -15,7 +15,7 @@
             "name": "Bananas",
             "category": "Fruit",
             "price": 3.00,
-            "description": "6 pack",
+            "desc": "6 pack",
             "img": "images/bananas.jpeg"
         },
         {
@@ -23,7 +23,7 @@
             "name": "Spinach",
             "category": "Veg",
             "price": 1.00,
-            "description": "500g",
+            "desc": "500g",
             "img": "images/spinach.jpeg"
         },
         {
@@ -31,7 +31,7 @@
             "name": "Garlic",
             "category": "Veg",
             "price": 0.50,
-            "description": "1 bulb",
+            "desc": "1 bulb",
             "img": "images/garlic.jpeg"
         },
         {
@@ -39,7 +39,7 @@
             "name": "Potatoes",
             "category": "Veg",
             "price": 3.00,
-            "description": "1kg",
+            "desc": "1kg",
             "img": "images/potatoes.jpeg"
         },
         {
@@ -47,7 +47,7 @@
             "name": "Milk",
             "category": "Dairy",
             "price": 1.50,
-            "description": "1L",
+            "desc": "1L",
             "img": "images/milk.jpeg"
         },
         {
@@ -55,7 +55,7 @@
             "name": "Butter",
             "category": "Dairy",
             "price": 1.90,
-            "description": "500g",
+            "desc": "500g",
             "img": "images/butter.jpeg"
         },
         {
@@ -63,7 +63,7 @@
             "name": "Cinnamon",
             "category": "Herbs & Spices",
             "price": 1.50,
-            "description": "100g",
+            "desc": "100g",
             "img": "images/cinnamon.jpeg"
         },
         {
@@ -71,7 +71,7 @@
             "name": "Thyme",
             "category": "Herbs & Spices",
             "price": 1.00,
-            "description": "100g",
+            "desc": "100g",
             "img": "images/thyme.jpeg"
         },
         {
@@ -79,7 +79,7 @@
             "name": "Salt & Vinegar Crisps",
             "category": "Snacks",
             "price": 3.00,
-            "description": "12 pack",
+            "desc": "12 pack",
             "img": "images/crisps.jpeg"
         },
         {
@@ -87,7 +87,7 @@
             "name": "80% Dark Chocolate",
             "category": "Snacks",
             "price": 1.80,
-            "description": "150g",
+            "desc": "150g",
             "img": "images/dark-choco.jpeg"
         },
         {
@@ -95,7 +95,7 @@
             "name": "Dried Mango",
             "category": "Snacks",
             "price": 3.80,
-            "description": "200g",
+            "desc": "200g",
             "img": "images/dried-mango.jpeg"
         }
 

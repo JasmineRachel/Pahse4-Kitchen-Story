@@ -13,10 +13,16 @@ function App() {
     username: " ",
     password: " "
   });
+  const [newProduct, setNewProduct] = useState({
+    name: " ",
+    category: " ",
+    price: " ",
+    desc: " ",
+    img: []
+  });
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isShown, setIsShown] = useState(false);
-
+  
   useEffect(()=> {
     fetch(' http://localhost:3000/items')
     .then(resp=>resp.json())
@@ -29,8 +35,16 @@ function App() {
     .then(data=>setUserData(data)) //
   }, [])
  
-  const changeHandler = (e) => {
+  const loginHandler = (e) => {
+    
     setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
+   
+  };
+  
+  const newProductHandler = (e) => {
+    // const path =  '/kitchen-story/public/images/';
+    // const value ={}
+    setNewProduct({...newProduct, [e.target.name] : e.target.value});
    
   };
 
@@ -55,7 +69,6 @@ function App() {
       toggleIsLoggedIn()
       console.log("login successful")
       console.log("user input", loginInput.username[0], loginInput.password[0])
-      setIsShown(true);
     }else{
       console.log("is logged in? ", isLoggedIn)
       console.log("no entry dude")
@@ -66,8 +79,8 @@ function App() {
   const submitHandler = e => {
     e.preventDefault();
     
-    console.log("userdata1", userData)
-    console.log("userinput1", loginInput)
+    console.log("userdata1", userData);
+    console.log("userinput1", loginInput);
 
     if(dataLength === 2){
       return checkUser(userData);
@@ -75,6 +88,11 @@ function App() {
       alert("no id, no entry")
     }
     
+  }
+
+  const submitProduct = e => {
+    e.preventDefault();
+    console.log("new product: ", newProduct);
   }
  
   const addToBasket = (item) => {
@@ -111,8 +129,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route index element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
-            <Route path="/admin-dashboard" element={<AdminDashboard items={items} isLoggedIn={isLoggedIn}/>}/> 
-            <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} changeHandler={changeHandler} submitHandler={submitHandler}/>}/>
+            <Route path="/admin-dashboard" element={<AdminDashboard items={items} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} submitProduct={submitProduct}/>}/> 
+            <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginHandler={loginHandler} submitHandler={submitHandler}/>}/>
           
           </Routes>
         </BrowserRouter>
