@@ -2,7 +2,7 @@ import React from 'react'
 import {PersonFillIcon} from '@primer/octicons-react'
 
 export default function AdminDashboard(props) {
-    const {items, isLoggedIn, loginInput, newProduct, newProductHandler, submitProduct} = props;
+    const {foodItems, isLoggedIn, loginInput, newProduct, newProductHandler, submitProduct, deleteProduct} = props;
     const {name, category, desc, price, img} = newProduct;
   return (
     <div className="container">
@@ -27,29 +27,35 @@ export default function AdminDashboard(props) {
         <div className="row" style={{paddingTop: "50px"}}>
             <div className="col-8 table-responsive-sm" >
             <h2> Product list </h2>
-                <table className="table table-dark table-sm" >
+                
+                <table className="table table-dark table-sm"  >
                     <thead>
                         <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Description</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Description</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
-                    {items.map(item=>(
+                    {foodItems.map(item=>(
                     <tbody key={item.id}>
                         <tr>
-                        <th scope="row">{item.id}</th>
-                        <td>{item.name}</td>
-                        <td>{item.category}</td>
-                        <td>{item.price}</td>
-                        <td>{item.desc}</td>
+                            <th scope="row">{item.id}</th>
+                            <td>{item.name}</td>
+                            <td>{item.category}</td>
+                            <td>{item.price}</td>
+                            <td>{item.desc}</td>
+                            <td>
+                                <button type="remove" className="btn btn-primary btn-sm" value={item.id} onClick={() => deleteProduct(item.id)}>remove</button>
+                            </td>
                         </tr>
 
                     </tbody>
                     ))}
                 </table>
+                
             </div>
         
             <aside className="col-md-4 ml-auto" style={{paddingTop:"0px", paddingLeft:"20px"}}>

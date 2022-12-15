@@ -1,5 +1,5 @@
 {
-  "items": [
+  "products": [
     {
       "id": 1,
       "name": "Apples",
@@ -87,14 +87,6 @@
       "price": 1.8,
       "desc": "150g",
       "img": "images/dark-choco.jpeg"
-    },
-    {
-      "id": 12,
-      "name": "Dried Mango",
-      "category": "Snacks",
-      "price": 3.8,
-      "desc": "200g",
-      "img": "images/dried-mango.jpeg"
     }
   ],
   "users": [

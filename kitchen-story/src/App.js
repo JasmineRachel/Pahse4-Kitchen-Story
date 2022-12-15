@@ -1,13 +1,12 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate, redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
 import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
-import { render } from '@testing-library/react';
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [foodItems, setFoodItems] = useState([]);
   const [basketItems, setBasketItems] = useState([]);
   const [loginInput, setLoginInput] = useState({
     username: " ",
@@ -22,17 +21,21 @@ function App() {
   });
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  useEffect(()=> {
-    fetch(' http://localhost:3000/items')
+
+  const fetchData = (dataList, setState) => {
+    fetch(`http://localhost:3000/${dataList}`)
     .then(resp=>resp.json())
-    .then(data=>setItems(data)) //
+    .then(data=>setState(data)) 
+  }
+  useEffect(()=> {
+    fetchData('products', setFoodItems)
+    // fetch('http://localhost:3000/items')
+    // .then(resp=>resp.json())
+    // .then(data=>setItems(data)) //
   }, [])
 
   useEffect(()=> {
-    fetch(' http://localhost:3000/users')
-    .then(resp=>resp.json())
-    .then(data=>setUserData(data)) //
+    fetchData('users', setUserData)
   }, [])
  
   const loginHandler = (e) => {
@@ -92,13 +95,25 @@ function App() {
 
   const submitProduct = e => {
     e.preventDefault();
-    console.log("new product: ", newProduct);
-    fetch(' http://localhost:3000/items', {
+    console.log("Adding new product: ", newProduct);
+    fetch(' http://localhost:3000/products', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(newProduct)
     }).then(() => {
-      console.log("new product added");
+      fetchData('products', setFoodItems)
+      console.log(`${newProduct.name} product added`)
+    } )
+  }
+
+  const deleteProduct = (productId) => {
+    console.log("Deleting product:", productId)
+    fetch(`http://localhost:3000/products/${productId}`, {
+      method: 'DELETE',
+      
+    }).then(() => {
+      fetchData('products', setFoodItems)
+      console.log(`product ${productId} deleted`)
     })
   }
  
@@ -135,8 +150,8 @@ function App() {
     <div className="container text-center">
         <BrowserRouter>
           <Routes>
-            <Route index element={<ItemList items={items} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
-            <Route path="/admin-dashboard" element={<AdminDashboard items={items} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} submitProduct={submitProduct}/>}/> 
+            <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
+            <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} submitProduct={submitProduct} deleteProduct={deleteProduct}/>}/> 
             <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginHandler={loginHandler} submitHandler={submitHandler}/>}/>
           
           </Routes>
