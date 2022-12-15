@@ -93,6 +93,13 @@ function App() {
   const submitProduct = e => {
     e.preventDefault();
     console.log("new product: ", newProduct);
+    fetch(' http://localhost:3000/items', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(newProduct)
+    }).then(() => {
+      console.log("new product added");
+    })
   }
  
   const addToBasket = (item) => {
