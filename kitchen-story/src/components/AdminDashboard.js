@@ -2,7 +2,7 @@ import React from 'react'
 import {PersonFillIcon} from '@primer/octicons-react'
 
 export default function AdminDashboard(props) {
-    const {foodItems, isLoggedIn, loginInput, newProduct, newProductHandler, submitProduct, deleteProduct} = props;
+    const {foodItems, isLoggedIn, loginInput, newProduct, newProductHandler, addProduct, deleteProduct} = props;
     const {name, category, desc, price, img} = newProduct;
   return (
     <div className="container">
@@ -48,7 +48,7 @@ export default function AdminDashboard(props) {
                             <td>{item.price}</td>
                             <td>{item.desc}</td>
                             <td>
-                                <button type="remove" className="btn btn-primary btn-sm" value={item.id} onClick={() => deleteProduct(item.id)}>remove</button>
+                                <button type="remove" className="btn btn-primary btn-sm" onClick={() => deleteProduct(item.id)}>remove</button>
                             </td>
                         </tr>
 
@@ -60,7 +60,7 @@ export default function AdminDashboard(props) {
         
             <aside className="col-md-4 ml-auto" style={{paddingTop:"0px", paddingLeft:"20px"}}>
                 <h2> Add a new product</h2>
-                <form onSubmit={submitProduct}>
+                <form onSubmit={addProduct}>
                     <div className="row">   
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Product name</label>

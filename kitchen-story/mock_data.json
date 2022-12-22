@@ -87,16 +87,27 @@
       "price": 1.8,
       "desc": "150g",
       "img": "images/dark-choco.jpeg"
+    },
+    {
+      "name": "Cheese Board",
+      "category": " Dairy",
+      "price": " £10",
+      "desc": " A Selection of 5 Cheese. 220g each.",
+      "img": "C:\\fakepath\\cheese-board.jpeg",
+      "id": 12
     }
   ],
   "users": [
     {
       "id": 1,
+      "email": "admin@kitchenstory.com",
       "username": "admin",
       "password": "123456"
+      
     },
     {
       "id": 2,
+      "email": "admin2@kitchenstory.com",
       "username": "admin2",
       "password": "09876"
     }
