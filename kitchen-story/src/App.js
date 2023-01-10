@@ -12,6 +12,7 @@ function App() {
    // for users to add items to their shopping basket
   const [basketItems, setBasketItems] = useState([]);
   //admin to add new products to the foodItems list
+  // TODO: figure out how to hard code the image path: `/kitchen-story/public/images/${img}`
   const [newProduct, setNewProduct] = useState({
     name: " ",
     category: " ",
@@ -26,7 +27,6 @@ function App() {
   });
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isReset, setIsReset] = useState(false);
   const [newPassword, setNewPassword] = useState("");
 
   // made this a reuseable function as it is used frequently
@@ -47,7 +47,7 @@ function App() {
   const loginInputHandler = (e) => {
     setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
   };
-  // TODO: figure out how to hard code the image path: `/kitchen-story/public/images/${img}`
+
   const newProductHandler = (e) => {
     setNewProduct({...newProduct, [e.target.name] : e.target.value});
   };
@@ -57,20 +57,15 @@ function App() {
   const toggleIsLoggedIn = () => {
     setIsLoggedIn(current => !current);
   };
-  const toggleIsReset= () => {
-    setIsReset(current => !current);
-  };
 
   useEffect(() => {
     console.log('is logged in? ', isLoggedIn)
   },[isLoggedIn]);
 
-  useEffect(() => {
-    console.log('password reset? ', isReset)
-  },[isReset]);
 
   const dataLength = Object.keys(loginInput).length
 
+  //checks if user exists at log in
   const checkUser = () => {
     const userCheck = userData.map(user => (user.username === loginInput.username[0] && user.password === loginInput.password[0]));
     const isTrue = (element) => element === true
@@ -88,7 +83,7 @@ function App() {
       console.log("user input", loginInput.username[0], loginInput.password[0])
     }
   }
-
+  // handles login 
   const loginToPortal = (e) => {
     e.preventDefault();
     
@@ -103,23 +98,11 @@ function App() {
     
   }
 
-
-  const getUserID = () => {
-    const findUserId = userData.map(user => (user.email === loginInput.email[0] ? user.id : null));
-    const userid = findUserId.find(element => typeof element === 'number');
-    return userid
-  }
-
-  const getUsername = () => {
-    const findUsername = userData.map(user => (user.email === loginInput.email[0] ? user.username : null));
-    const username = findUsername.find(element => typeof element === 'string');
-    return username
-  }
-
+ 
+  //Checks email exists at password reset
   const emailCheck = () => {
     const checkEmail = userData.map(user => (user.email === loginInput.email[0]));
     const isTrue = (element) => element === true;
-    
 
     console.log("email check", checkEmail)
     console.log(checkEmail.some(isTrue))
@@ -134,7 +117,7 @@ function App() {
       console.log("password reset no allowed. ", loginInput.email[0], " doesn't exist!")
     }
   } 
-
+  //handles email submit when check user exists on password reset
   const userExists = (e) => {
     e.preventDefault();
     
@@ -147,8 +130,20 @@ function App() {
       alert("no id, no entry")
     }
   }
-
+   //Finds user ID to reference at PUT for password reset
+   const getUserID = () => {
+    const findUserId = userData.map(user => (user.email === loginInput.email[0] ? user.id : null));
+    const userid = findUserId.find(element => typeof element === 'number');
+    return userid
+  }
+  //Finds username to reference at PUT for password reset
+  const getUsername = () => {
+    const findUsername = userData.map(user => (user.email === loginInput.email[0] ? user.username : null));
+    const username = findUsername.find(element => typeof element === 'string');
+    return username
+  }
   const resetPassword = (e) => {
+    e.preventDefault();
     console.log("resetting password...")
     fetch(`http://localhost:3000/users/${getUserID()}`, {
       method: 'PUT',
@@ -159,23 +154,14 @@ function App() {
         password: newPassword})
       
     }).then((resp) => {
-      console.log(resp.status)
-      // I am unable to get the page to redirect to '/admin-login' when user has successfully changed password.
-      // I suspect it is due to the conditional rendering in PasswordReset.js
-      console.log(resp.status);
-      if (resp.status === 201){
-        e.preventDefault();
+      console.log("resp", resp);
+      if (resp.status === 200){
+        
         fetchData('users', setUserData)
-        toggleIsReset();
-        if (isReset === true){
-          alert("yay")
-          console.log("redirecting...")
-          
-        }
+        window.location.assign("/admin-login")
       }
     })
-    toggleIsReset();
-    return redirect('/admin-login');
+    
   }
  
   // product management
@@ -212,7 +198,6 @@ function App() {
     })
   }
 
- 
   const addToBasket = (item) => {
     console.log("Basket items " + basketItems)
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
@@ -228,7 +213,6 @@ function App() {
       setBasketItems([...basketItems, { ...item, qty: 1 }]);
     }
   };
-
  
   const removeFromBasket = (item) => {
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
