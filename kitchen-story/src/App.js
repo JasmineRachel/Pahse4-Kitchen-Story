@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Route, Routes, Navigate, redirect, resolvePath } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import ItemList from './components/ItemList.js';
+import ItemList from './components/itemList.js';
 import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
 import PasswordReset from './components/PasswordReset.js';
@@ -229,7 +229,6 @@ function App() {
   
   return (
     <div className="container text-center">
-      {/* <Nav isLoggedIn={isLoggedIn} loginInput={loginInput}/> */}
         <BrowserRouter>
           <Routes>
             <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput}/>}/>

@@ -1,5 +1,5 @@
 import React from 'react'
-import Item from './Item';
+import Item from './item';
 import Basket from './Basket';
 import Nav from './NavBar.js';
 
