@@ -1,13 +1,16 @@
 import React from 'react'
 import Item from './Item';
 import Basket from './Basket';
+import Nav from './NavBar.js';
 
-export default function ItemList({foodItems, basketItems, addToBasket, removeFromBasket}) {
+export default function ItemList(props) {
+  const {foodItems, basketItems, addToBasket, removeFromBasket, isLoggedIn, loginInput} =props
   return (
     <div className="container">
+      <h1> Latest products on offer</h1>
+      <Nav isLoggedIn={isLoggedIn} loginInput={loginInput}/>
       <div className="row">
-        <main className="col-8" style={{ border: "", borderColor: "black"}}>
-          <h1> latest products on offer</h1>
+        <main className="col-8" style={{paddingTop:"20px"}}>
             <div className="row">
                 {foodItems.map(item=>(
                   <div key={item.id} className='col-md-4' style={{paddingTop: "10px"}}>
@@ -17,6 +20,7 @@ export default function ItemList({foodItems, basketItems, addToBasket, removeFro
             </div>
 
         </main>
+        
         <Basket
           foodIitems={foodItems}
           basketItems={basketItems}
