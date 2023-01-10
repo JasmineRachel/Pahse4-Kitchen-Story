@@ -1,8 +1,8 @@
 # Pahse4-Kitchen-Story
 
 Project: Kitchen Story, developed by Jasmine Davies
-Kanban: https://trello.com/b/20RQqPAg/kitchen-story
-Doc: https://docs.google.com/document/d/1eHs1ZkFfTRo7cVNqFmNJiXlkU4rG3QAB8b3tuizDGJs/edit?usp=sharing 
+- Kanban: https://trello.com/b/20RQqPAg/kitchen-story
+- Doc: https://docs.google.com/document/d/1eHs1ZkFfTRo7cVNqFmNJiXlkU4rG3QAB8b3tuizDGJs/edit?usp=sharing 
 
 Application Set-Up
 
@@ -14,4 +14,4 @@ Application Set-Up
     - username: admin
     - password: 123456
 
-    Please refer the the users array in the mock_data.json file
+    Please refer the the 'users' array in the mock_data.json file
