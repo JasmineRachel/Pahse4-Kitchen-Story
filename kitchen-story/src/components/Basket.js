@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Basket(props) {
-    const {basketItems, addToBasket, removefromBasket} = props;
+    const {basketItems, addToBasket, removeFromBasket} = props;
     const totalPrice = basketItems.reduce((a, c) => a + c.qty * c.price, 0);
 
   return (
@@ -15,7 +15,7 @@ export default function Basket(props) {
                 <div key={item.id} className="row" style={{margin: "auto"}}>
                     <div className="col-2" style={{width: "100px"}}> {item.name}</div>
                     <div className="col-2" style={{width: "150px"}}> 
-                        <button className="remove" onClick={()=>removefromBasket(item)}> - </button>
+                        <button className="remove" onClick={()=>removeFromBasket(item)}> - </button>
                         <button onClick={()=>addToBasket(item)} className="add"> + </button>
                     </div>
                     <div className="col-2 text-right" style={{width: "150px"}}> 
