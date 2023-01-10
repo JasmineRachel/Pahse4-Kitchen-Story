@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate, redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate, redirect, resolvePath } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ItemList from './components/ItemList.js';
 import AdminLogin from './components/AdminLogin.js';
@@ -26,8 +26,8 @@ function App() {
   });
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isReset, setIsReset] = useState(false);
   const [newPassword, setNewPassword] = useState("");
-  const [userID, setUserID] = useState(0);
 
   // made this a reuseable function as it is used frequently
   const fetchData = (dataList, setState) => {
@@ -57,15 +57,22 @@ function App() {
   const toggleIsLoggedIn = () => {
     setIsLoggedIn(current => !current);
   };
+  const toggleIsReset= () => {
+    setIsReset(current => !current);
+  };
 
   useEffect(() => {
     console.log('is logged in? ', isLoggedIn)
   },[isLoggedIn]);
 
+  useEffect(() => {
+    console.log('password reset? ', isReset)
+  },[isReset]);
+
   const dataLength = Object.keys(loginInput).length
 
   const checkUser = () => {
-    const userCheck = userData.map(user => (user.username == loginInput.username[0] && user.password == loginInput.password[0]));
+    const userCheck = userData.map(user => (user.username === loginInput.username[0] && user.password === loginInput.password[0]));
     const isTrue = (element) => element === true
     
     console.log("user check", userCheck)
@@ -96,11 +103,17 @@ function App() {
     
   }
 
-  const findUserID = () => {
+
+  const getUserID = () => {
     const findUserId = userData.map(user => (user.email === loginInput.email[0] ? user.id : null));
     const userid = findUserId.find(element => typeof element === 'number');
-    console.log("USER ID", userid)
-    setUserID(userid);
+    return userid
+  }
+
+  const getUsername = () => {
+    const findUsername = userData.map(user => (user.email === loginInput.email[0] ? user.username : null));
+    const username = findUsername.find(element => typeof element === 'string');
+    return username
   }
 
   const emailCheck = () => {
@@ -114,8 +127,7 @@ function App() {
     if(checkEmail.some(isTrue) === true) {
       toggleIsLoggedIn()
       console.log("can reset",)
-      findUserID(userData);
-      console.log("USER ID set", userID)
+      console.log("found USER'S ID", getUserID(), getUsername())
       console.log("user input at reset", loginInput.email[0])
     }else{
       console.log("is logged in? ", isLoggedIn)
@@ -135,9 +147,39 @@ function App() {
       alert("no id, no entry")
     }
   }
-  
+
+  const resetPassword = (e) => {
+    console.log("resetting password...")
+    fetch(`http://localhost:3000/users/${getUserID()}`, {
+      method: 'PUT',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        email:loginInput.email[0],
+        username:getUsername(),
+        password: newPassword})
+      
+    }).then((resp) => {
+      console.log(resp.status)
+      // I am unable to get the page to redirect to '/admin-login' when user has successfully changed password.
+      // I suspect it is due to the conditional rendering in PasswordReset.js
+      console.log(resp.status);
+      if (resp.status === 201){
+        e.preventDefault();
+        fetchData('users', setUserData)
+        toggleIsReset();
+        if (isReset === true){
+          alert("yay")
+          console.log("redirecting...")
+          
+        }
+      }
+    })
+    toggleIsReset();
+    return redirect('/admin-login');
+  }
+ 
+  // product management
   const addProduct = (e) => {
-    
     console.log("Adding new product: ", newProduct);
     fetch(' http://localhost:3000/products', {
       method: 'POST',
@@ -145,7 +187,7 @@ function App() {
       body: JSON.stringify(newProduct)
     }).then((resp) => {
       console.log(resp.status)
-      if(resp.status == 201){
+      if(resp.status === 201){
         e.preventDefault();
         fetchData('products', setFoodItems)
         console.log(`${newProduct.name} product added`)
@@ -161,7 +203,7 @@ function App() {
       method: 'DELETE',
       
     }).then((resp) => {
-      if(resp.status == 200){
+      if(resp.status=== 200){
         fetchData('products', setFoodItems)
         console.log(`product ${productId} deleted`)
       }else{
@@ -170,24 +212,6 @@ function App() {
     })
   }
 
-  const resetPassword = (userID) => {
-    // e.preventDefault();
-    //need to retreive user id, to find user more efficiently
-    console.log("resetting password...")
-    fetch(`http://localhost:3000/users/${userID}`, {
-      method: 'PUT',
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        email:loginInput.email[0],
-        username:loginInput.username[0],
-        password: newPassword})
-      
-    }).then((resp) => {
-      console.log(resp.status)
-      // fetchData('users', setUserData)
-      // console.log("resetpassword to ", newPassword)
-    })
-  }
  
   const addToBasket = (item) => {
     console.log("Basket items " + basketItems)
@@ -205,7 +229,7 @@ function App() {
     }
   };
 
-  // TODO: use this function or similar logic to remove products in the admin dashboard
+ 
   const removeFromBasket = (item) => {
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
     if (itemExists.qty === 1) {
@@ -226,7 +250,7 @@ function App() {
             <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket}/>}/>
             <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} addProduct={addProduct} deleteProduct={deleteProduct}/>}/> 
             <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginInputHandler={loginInputHandler} loginToPortal={loginToPortal}/>}/>
-            <Route path="/password-reset" element={<PasswordReset userData={userData} loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn}  newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>
+            <Route path="/password-reset" element={ <PasswordReset loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn} newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>
           
           </Routes>
         </BrowserRouter>

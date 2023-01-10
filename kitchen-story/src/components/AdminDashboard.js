@@ -6,6 +6,7 @@ export default function AdminDashboard(props) {
     const {name, category, desc, price, img} = newProduct;
   return (
     <div className="container">
+        
         <h2> Admin Dashboard </h2>
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function PasswordReset(props) {
     const {loginInput, loginInputHandler, userExists, isLoggedIn, newPasswordHandler, newPassword, resetPassword} = props
@@ -6,45 +6,43 @@ export default function PasswordReset(props) {
 
   return (
     <div className="container" style={{width: "500px"}}>
-        
-
-        {isLoggedIn === true ? 
         <div>
-            <p> hi {email} please reset you password</p>
-            <form onSubmit={resetPassword}>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">New Password</label>
-                    <input 
-                        type="password" className="form-control" placeholder="Password" 
-                        name="password" value={newPassword} onChange={newPasswordHandler} required
-                    />
+            <h2>Password Reset</h2>
 
-                </div>
-                <div className="mb-3">
-                    <button className="btn btn-primary" type="submit">  Change Password </button>
-                </div>
-            </form> 
-        </div>
-        : 
-        <div>
-            <h2>PasswordReset</h2>
             <form onSubmit={userExists}>
-                <div className="mb-3">
-                    <label htmlFor="username" className="form-label">Email</label>
+                <label htmlFor="username" className="form-label">Please enter your email to reset your password </label>
+                <div className="input-group mb-3">
                     <input 
                         type="email" className="form-control" placeholder="Email" name="email" 
                         value={email} onChange={loginInputHandler} required
                     />
-                    <div className="invalid-feedback">
-                        Please provide a valid username.
-                    </div>
-                </div>
-                <div className="mb-3">
                     <button className="btn btn-primary" type="submit"> Enter </button>
-                </div> 
+                </div>
             </form>
+
+            
         </div>
-        }
+            
+        <div>
+            <p> </p>
+            <form onSubmit={resetPassword}>
+                <label htmlFor="password" className="form-label">Enter your new password</label>
+                <div className="input-group mb-3">
+                    <input 
+                        type="password" className="form-control" placeholder="Password" 
+                        name="password" value={newPassword} onChange={newPasswordHandler} disabled={!isLoggedIn}
+                    />
+                    <button className="btn btn-primary" type="submit" disabled={!isLoggedIn}>  Change Password </button>
+
+                </div>
+            </form> 
+        </div>
+
+        <div className="mb-3">
+              <a href="/admin-login" className="link-primary">Log in to your Dashboard</a>
+        </div>
+        
+        
         
     </div>
   )
