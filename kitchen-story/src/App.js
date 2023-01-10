@@ -5,12 +5,22 @@ import ItemList from './components/itemList.js';
 import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
 import PasswordReset from './components/PasswordReset.js';
+import Checkout from './components/Checkout.js';
 
 function App() {
   // for retrieving all food products for the shop & admin dashboard
   const [foodItems, setFoodItems] = useState([]);
    // for users to add items to their shopping basket
   const [basketItems, setBasketItems] = useState([]);
+  const [finalBasket, setFinalBasket] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [checkoutInput, setCheckoutInput] = useState({
+    fullname: "",
+    email: "",
+    shipTo: "",
+    items :[]
+
+  });
   //admin to add new products to the foodItems list
   // TODO: figure out how to hard code the image path: `/kitchen-story/public/images/${img}`
   const [newProduct, setNewProduct] = useState({
@@ -43,17 +53,28 @@ function App() {
   useEffect(()=> {
     fetchData('users', setUserData)
   }, [])
+  useEffect(()=> {
+    fetchData('orders', setOrders)
+  }, [])
  
   const loginInputHandler = (e) => {
     setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
   };
-
+  const basketHandler = (e) => {
+    setBasketItems(e.target.value);
+  }
+  // useEffect((e) => {
+  //   setBasketItems(e.target.value);
+  // })
   const newProductHandler = (e) => {
     setNewProduct({...newProduct, [e.target.name] : e.target.value});
   };
+  const checkoutInputHandler= (e) => {
+    setCheckoutInput({...checkoutInput, [e.target.name] : [e.target.value]});
+  };
   const newPasswordHandler = (e) => {
     setNewPassword(e.target.value);
-  }
+  };
   const toggleIsLoggedIn = () => {
     setIsLoggedIn(current => !current);
   };
@@ -98,7 +119,6 @@ function App() {
     
   }
 
- 
   //Checks email exists at password reset
   const emailCheck = () => {
     const checkEmail = userData.map(user => (user.email === loginInput.email[0]));
@@ -161,7 +181,6 @@ function App() {
         window.location.assign("/admin-login")
       }
     })
-    
   }
  
   // product management
@@ -199,6 +218,7 @@ function App() {
   }
 
   const addToBasket = (item) => {
+    // e.preventDefault();
     console.log("Basket items " + basketItems)
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
   
@@ -209,12 +229,14 @@ function App() {
         )
       );
       console.log(item.name + " added to basket")
+      console.log("current basket " + basketItems)
     } else {
       setBasketItems([...basketItems, { ...item, qty: 1 }]);
     }
   };
  
   const removeFromBasket = (item) => {
+    // e.preventDefault();
     const itemExists = basketItems.find((basketItem) => basketItem.id === item.id);
     if (itemExists.qty === 1) {
       setBasketItems(basketItems.filter((x) => x.id !== item.id));
@@ -226,16 +248,43 @@ function App() {
       );
     }
   }
-  
+  const purchaseOrder = (e) =>{
+    e.preventDefault();
+    console.log("current order details ", checkoutInput);
+    console.log("basket ", basketItems);
+    fetch(' http://localhost:3000/orders', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        customerName: checkoutInput.fullname[0],
+        customerEmail: checkoutInput.email[0],
+        customerAddress: checkoutInput.shipTo[0],
+      })
+    }).then((resp) => {
+      console.log(resp.status)
+      if(resp.status === 201){
+        // e.preventDefault();
+        fetchData('orders', setOrders)
+        console.log("successful checkout")
+      }else{
+        console.log("Something has gone wrong")
+      }
+    } )
+  }
+  const checkout = (e) =>{
+    e.preventDefault();
+    console.log(basketItems)
+    window.location.assign("/checkout")
+  }
   return (
     <div className="container text-center">
         <BrowserRouter>
           <Routes>
-            <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput}/>}/>
+            <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput} basketHandler={basketHandler} checkout={checkout}/>}/>
             <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} addProduct={addProduct} deleteProduct={deleteProduct}/>}/> 
             <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginInputHandler={loginInputHandler} loginToPortal={loginToPortal}/>}/>
             <Route path="/password-reset" element={ <PasswordReset loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn} newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>
-          
+            <Route path="/checkout" element={<Checkout basketItems={basketItems} checkoutInput={checkoutInput} checkoutInputHandler={checkoutInputHandler} purchaseOrder={purchaseOrder}/>}/>
           </Routes>
         </BrowserRouter>
         
