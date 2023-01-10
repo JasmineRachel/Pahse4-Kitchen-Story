@@ -6,7 +6,7 @@ export default function Basket(props) {
 
   return (
     
-    <aside className="col-md-4 ml-auto" style={{paddingTop:"70px", paddingLeft:"20px"}}>
+    <aside className="col-md-4 ml-auto" style={{paddingTop:"30px", paddingLeft:"20px"}}>
         <div style={{backgroundColor: "papayawhip"}}>
             <h2>Basket Items</h2>
             <div>
