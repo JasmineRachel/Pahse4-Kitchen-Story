@@ -6,16 +6,16 @@ export default function AdminDashboard(props) {
     const {name, category, desc, price, img} = newProduct;
   return (
     <div className="container">
-        
+
         <h2> Admin Dashboard </h2>
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Kitchen Story</a>
-                <a className="nav-link disabled"> <PersonFillIcon size={24} /> Hello {isLoggedIn ? loginInput.username[0] : <>User</> } </a>
+                <a className="navbar-brand" href="/">Kitchen Story</a>
+                <a className="nav-link disabled" href="/admin-dashboard"> <PersonFillIcon size={24} /> Hello {isLoggedIn ? loginInput.username[0] : <>User</> } </a>
                 <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                 <li className="nav-item">
-                    <a className="nav-link" href="#">reset password</a>
+                    <a className="nav-link" href="/password-reset">reset password</a>
                     </li>
                     <li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/">View shop</a>
