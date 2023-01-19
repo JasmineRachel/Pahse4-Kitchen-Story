@@ -268,16 +268,15 @@ function App() {
     // console.log("preparing for checkout... Items: ", basketProducts);
     console.log("preparing for checkout... Items: ", basketItems);
     console.log(" TotalPrice of items: ", totalPrice);
-    // setItemsForCheckout({
-    //   items: basketItems,
-    //   totalPrice: totalPrice
-    // })
-    window.location.assign("/checkout");
+    sessionStorage.setItem("currentOrder",JSON.stringify(basketItems));
+    sessionStorage.setItem("totalPrice", totalPrice);
     console.log("going to checkout... ");
+    window.location.assign("/checkout");
+   
     // console.log("PLEASE SHOW BASKET ITEMS", finalBasket);
   };
 
-  const purchaseOrder = (e, basketItems) =>{
+  const purchaseOrder = (e) =>{
     e.preventDefault();
     console.log("basket ", basketItems);
     console.log("current order details ", checkoutInput);

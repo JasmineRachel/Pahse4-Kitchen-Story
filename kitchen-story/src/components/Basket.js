@@ -16,7 +16,7 @@ export default function Basket(props) {
         
                 <div>
                     {basketProducts.length === 0 && <div> Basket is empty</div>}
-                    {basketProducts.map((item) => (
+                    {basketProducts.map(item => 
                         <div key={item.id} className="row" style={{margin: "auto"}}>
                             <div className="col-2" style={{width: "100px"}}> {item.name}</div>
                             <div className="col-2" style={{width: "150px"}}> 
@@ -28,7 +28,7 @@ export default function Basket(props) {
                             </div>    
                         </div>
                     
-                    ))}
+                    )}
                         
                     {console.log("BASKET ITEMS BASKET ITEMS ", basketProducts)}
 
