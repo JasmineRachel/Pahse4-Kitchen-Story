@@ -29,10 +29,7 @@ export default function Checkout(props) {
                 type="text" className="form-control" placeholder="Full Address" name="shipTo" 
                 value={shipTo} onChange={checkoutInputHandler} required
             />
-            {/* <input 
-                type="hidden" className="form-control" placeholder="Full Address" name="items" 
-                value={basketProducts} onChange={checkoutInputHandler} required
-            /> */}
+ 
             <div className="mb-3">
                 <button className="btn btn-primary" type="submit"> Order </button>
             </div>

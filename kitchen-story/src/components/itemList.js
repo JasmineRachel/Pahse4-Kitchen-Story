@@ -24,8 +24,6 @@ export default function ItemList(props) {
         </main>
         
           <Basket
-            // basket={basket}
-            // foodIitems={foodItems}
             addToBasket={addToBasket}
             removeFromBasket={removeFromBasket}
             goToCheckout={goToCheckout}

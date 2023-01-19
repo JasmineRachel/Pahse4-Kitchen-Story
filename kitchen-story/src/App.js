@@ -45,7 +45,7 @@ function App() {
   });
   // to toggle the user's logged in state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [hasPurchased, setHasPurchased] = useState(false);
+  
   //saving the user's new password when resetting
   const [newPassword, setNewPassword] = useState("");
 
@@ -86,13 +86,6 @@ function App() {
   useEffect(() => {
     console.log('is logged in? ', isLoggedIn)
   },[isLoggedIn]);
-
-  // const toggleHasPurchased = () => {
-  //   setHasPurchased(current => !current);
-  // };
-  // useEffect(() => {
-  //   console.log('has purchased? ', hasPurchased)
-  // },[hasPurchased]);
 
 
   const dataLength = Object.keys(loginInput).length
@@ -265,22 +258,19 @@ function App() {
   
   const goToCheckout = (totalPrice) =>{
     // e.preventDefault();
-    // console.log("preparing for checkout... Items: ", basketProducts);
     console.log("preparing for checkout... Items: ", basketItems);
     console.log(" TotalPrice of items: ", totalPrice);
+
     sessionStorage.setItem("currentOrder",JSON.stringify(basketItems));
     sessionStorage.setItem("totalPrice", totalPrice);
+
     console.log("going to checkout... ");
     window.location.assign("/checkout");
-   
-    // console.log("PLEASE SHOW BASKET ITEMS", finalBasket);
   };
 
   const purchaseOrder = (e) =>{
     e.preventDefault();
-    console.log("basket ", basketItems);
-    console.log("current order details ", checkoutInput);
-    
+
     fetch(' http://localhost:3000/orders', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
@@ -293,12 +283,10 @@ function App() {
     }).then((resp) => {
       console.log(resp.status)
       if(resp.status === 201){
-        // toggleHasPurchased()
         fetchData('orders', setOrders)
+
         console.log("successful checkout")
-        
         window.location.assign("/checkout-success");
-       
       }else{
         console.log("Something has gone wrong")
       }
