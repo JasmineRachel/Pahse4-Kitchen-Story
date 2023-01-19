@@ -8,6 +8,7 @@ import AdminDashboard from './components/AdminDashboard.js';
 import PasswordReset from './components/PasswordReset.js';
 import Checkout from './components/Checkout.js';
 import Success from './components/Success.js';
+import LandingPage from './components/LandingPage.js';
 
 
 export const BasketContext = React.createContext();
@@ -89,7 +90,7 @@ function App() {
 
 
   const dataLength = Object.keys(loginInput).length
-
+  //the functions below manage the admin portal 
   //checks if user exists at log in
   const checkUser = () => {
     const userCheck = userData.map(user => (user.username === loginInput.username[0] && user.password === loginInput.password[0]));
@@ -190,7 +191,7 @@ function App() {
     })
   }
  
-  // product management
+  // the functions below manage the kitchen story shop
   const addProduct = (e) => {
     console.log("Adding new product: ", newProduct);
     fetch(' http://localhost:3000/products', {
@@ -298,7 +299,8 @@ function App() {
       <div className="container text-center">
           <BrowserRouter>
             <Routes>
-              <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput} goToCheckout={goToCheckout} basketHandler={basketHandler} itemsForCheckout={itemsForCheckout}/>}/>
+              <Route index element={<LandingPage/>}/>
+              <Route path="/shop" element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput} goToCheckout={goToCheckout} basketHandler={basketHandler} itemsForCheckout={itemsForCheckout}/>}/>
               <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} addProduct={addProduct} deleteProduct={deleteProduct}/>}/> 
               <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginInputHandler={loginInputHandler} loginToPortal={loginToPortal}/>}/>
               <Route path="/password-reset" element={ <PasswordReset loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn} newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>

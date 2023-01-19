@@ -1,13 +1,17 @@
-import React from 'react'
+import React from 'react';
+import Nav from './NavBar.js';
 
 export default function AdminLogin(props) {
     const {loginInput, loginInputHandler, loginToPortal} = props
     const{username, password} = loginInput;
   return (
-    <div className="container" style={{width: "500px"}}>
+    <div className="container" >
+        <Nav/>
+        <br></br>
         <h2>Admin Login</h2>
+        <br></br>
         
-        <form onSubmit={loginToPortal}>
+        <form onSubmit={loginToPortal} style={{margin: "auto", width: "800px"}}>
             <div className="mb-3">
                 <label htmlFor="username" className="form-label">Username</label>
                 <input 

@@ -21,7 +21,7 @@ export default function Nav(props) {
                     ""
                 }
                     <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" href="/">View shop</a>
+                        <a className="nav-link active" aria-current="page" href="/shop">View shop</a>
                     </li>
                 </ul>
                 </div>

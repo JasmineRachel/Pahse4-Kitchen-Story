@@ -63,7 +63,7 @@ export default function Success(props) {
                 </div>
             </div> 
             
-            <button className="btn btn-primary" onClick={() => window.location.assign('/')}>Continue shopping</button>
+            <button className="btn btn-primary" onClick={() => window.location.assign('/shop')}>Continue shopping</button>
 
         </div>
     )
