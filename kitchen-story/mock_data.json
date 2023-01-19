@@ -89,6 +89,9 @@
       "img": "images/dark-choco.jpeg"
     }
   ],
+  "orders": [
+    
+  ],
   "users": [
     {
       "email": "admin@kitchenstory.com",

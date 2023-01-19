@@ -3,8 +3,10 @@ import Item from './item';
 import Basket from './Basket';
 import Nav from './NavBar.js';
 
+
 export default function ItemList(props) {
-  const {foodItems, basketItems, addToBasket, removeFromBasket, isLoggedIn, loginInput} =props
+  const {foodItems, addToBasket, removeFromBasket, isLoggedIn, loginInput, goToCheckout, basketHandler, itemsForCheckout} = props
+
   return (
     <div className="container">
       <h1> Latest products on offer</h1>
@@ -21,12 +23,13 @@ export default function ItemList(props) {
 
         </main>
         
-        <Basket
-          foodIitems={foodItems}
-          basketItems={basketItems}
-          addToBasket={addToBasket}
-          removeFromBasket={removeFromBasket}
-        ></Basket>
+          <Basket
+            addToBasket={addToBasket}
+            removeFromBasket={removeFromBasket}
+            goToCheckout={goToCheckout}
+            basketHandler={basketHandler}
+            itemsForCheckout={itemsForCheckout}
+          ></Basket>
       </div>
     </div>
     

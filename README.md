@@ -14,4 +14,4 @@ Application Set-Up
     - username: admin
     - password: 123456
 
-    Please refer the the 'users' array in the mock_data.json file
+    Please refer the the 'users' array in the mock_data.json file for pre-entered user credentials
