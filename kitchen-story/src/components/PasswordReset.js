@@ -41,6 +41,9 @@ export default function PasswordReset(props) {
         <div className="mb-3">
               <a href="/admin-login" className="link-primary">Log in to your Dashboard</a>
         </div>
+        <div className="mb-3">
+              <a href="/" className="link-primary">Home</a>
+        </div>
         
         
         
