@@ -1,25 +1,33 @@
+// eslint-disable-next-line
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate, redirect, resolvePath } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import ItemList from './components/itemList.js';
 import AdminLogin from './components/AdminLogin.js';
 import AdminDashboard from './components/AdminDashboard.js';
 import PasswordReset from './components/PasswordReset.js';
 import Checkout from './components/Checkout.js';
+import Success from './components/Success.js';
+
+
+export const BasketContext = React.createContext();
 
 function App() {
-  // for retrieving all food products for the shop & admin dashboard
+  // for saving all food products for the shop & admin dashboard
   const [foodItems, setFoodItems] = useState([]);
+  // for saving all user data
+  const [userData, setUserData] = useState([]);
    // for users to add items to their shopping basket
   const [basketItems, setBasketItems] = useState([]);
-  const [finalBasket, setFinalBasket] = useState([]);
+  const [itemsForCheckout, setItemsForCheckout] = useState({
+    items: [],
+    totalPrice: ""
+  });
   const [orders, setOrders] = useState([]);
   const [checkoutInput, setCheckoutInput] = useState({
     fullname: "",
     email: "",
     shipTo: "",
-    items :[]
-
   });
   //admin to add new products to the foodItems list
   // TODO: figure out how to hard code the image path: `/kitchen-story/public/images/${img}`
@@ -35,11 +43,13 @@ function App() {
     username: " ",
     password: " "
   });
-  const [userData, setUserData] = useState([]);
+  // to toggle the user's logged in state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [hasPurchased, setHasPurchased] = useState(false);
+  //saving the user's new password when resetting
   const [newPassword, setNewPassword] = useState("");
 
-  // made this a reuseable function as it is used frequently
+  // A reuseable function to retrieve and save data as it is used frequently
   const fetchData = (dataList, setState) => {
     fetch(`http://localhost:3000/${dataList}`)
     .then(resp=>resp.json())
@@ -47,29 +57,24 @@ function App() {
   }
 
   useEffect(()=> {
-    fetchData('products', setFoodItems)
+    fetchData('products', setFoodItems);
+    fetchData('users', setUserData);
+    fetchData('orders', setOrders);
+    setBasketItems(basketItems);
+    setCheckoutInput(checkoutInput)
   }, [])
-
-  useEffect(()=> {
-    fetchData('users', setUserData)
-  }, [])
-  useEffect(()=> {
-    fetchData('orders', setOrders)
-  }, [])
+  
  
   const loginInputHandler = (e) => {
     setLoginInput({...loginInput, [e.target.name] : [e.target.value]});
   };
   const basketHandler = (e) => {
-    setBasketItems(e.target.value);
-  }
-  // useEffect((e) => {
-  //   setBasketItems(e.target.value);
-  // })
+    setItemsForCheckout({...itemsForCheckout, [e.target.name] : [e.target.value]});
+  };
   const newProductHandler = (e) => {
     setNewProduct({...newProduct, [e.target.name] : e.target.value});
   };
-  const checkoutInputHandler= (e) => {
+  const checkoutInputHandler = (e) => {
     setCheckoutInput({...checkoutInput, [e.target.name] : [e.target.value]});
   };
   const newPasswordHandler = (e) => {
@@ -78,10 +83,16 @@ function App() {
   const toggleIsLoggedIn = () => {
     setIsLoggedIn(current => !current);
   };
-
   useEffect(() => {
     console.log('is logged in? ', isLoggedIn)
   },[isLoggedIn]);
+
+  // const toggleHasPurchased = () => {
+  //   setHasPurchased(current => !current);
+  // };
+  // useEffect(() => {
+  //   console.log('has purchased? ', hasPurchased)
+  // },[hasPurchased]);
 
 
   const dataLength = Object.keys(loginInput).length
@@ -137,6 +148,7 @@ function App() {
       console.log("password reset no allowed. ", loginInput.email[0], " doesn't exist!")
     }
   } 
+
   //handles email submit when check user exists on password reset
   const userExists = (e) => {
     e.preventDefault();
@@ -150,8 +162,9 @@ function App() {
       alert("no id, no entry")
     }
   }
+
    //Finds user ID to reference at PUT for password reset
-   const getUserID = () => {
+  const getUserID = () => {
     const findUserId = userData.map(user => (user.email === loginInput.email[0] ? user.id : null));
     const userid = findUserId.find(element => typeof element === 'number');
     return userid
@@ -162,6 +175,7 @@ function App() {
     const username = findUsername.find(element => typeof element === 'string');
     return username
   }
+
   const resetPassword = (e) => {
     e.preventDefault();
     console.log("resetting password...")
@@ -248,47 +262,65 @@ function App() {
       );
     }
   }
-  const purchaseOrder = (e) =>{
+  
+  const goToCheckout = (totalPrice) =>{
+    // e.preventDefault();
+    // console.log("preparing for checkout... Items: ", basketProducts);
+    console.log("preparing for checkout... Items: ", basketItems);
+    console.log(" TotalPrice of items: ", totalPrice);
+    // setItemsForCheckout({
+    //   items: basketItems,
+    //   totalPrice: totalPrice
+    // })
+    window.location.assign("/checkout");
+    console.log("going to checkout... ");
+    // console.log("PLEASE SHOW BASKET ITEMS", finalBasket);
+  };
+
+  const purchaseOrder = (e, basketItems) =>{
     e.preventDefault();
-    console.log("current order details ", checkoutInput);
     console.log("basket ", basketItems);
+    console.log("current order details ", checkoutInput);
+    
     fetch(' http://localhost:3000/orders', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
-        customerName: checkoutInput.fullname[0],
+        customerName: checkoutInput.fullname[0], 
         customerEmail: checkoutInput.email[0],
         customerAddress: checkoutInput.shipTo[0],
+        order: basketItems,
       })
     }).then((resp) => {
       console.log(resp.status)
       if(resp.status === 201){
-        // e.preventDefault();
+        // toggleHasPurchased()
         fetchData('orders', setOrders)
         console.log("successful checkout")
+        
+        window.location.assign("/checkout-success");
+       
       }else{
         console.log("Something has gone wrong")
       }
     } )
   }
-  const checkout = (e) =>{
-    e.preventDefault();
-    console.log(basketItems)
-    window.location.assign("/checkout")
-  }
+ 
   return (
-    <div className="container text-center">
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput} basketHandler={basketHandler} checkout={checkout}/>}/>
-            <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} addProduct={addProduct} deleteProduct={deleteProduct}/>}/> 
-            <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginInputHandler={loginInputHandler} loginToPortal={loginToPortal}/>}/>
-            <Route path="/password-reset" element={ <PasswordReset loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn} newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>
-            <Route path="/checkout" element={<Checkout basketItems={basketItems} checkoutInput={checkoutInput} checkoutInputHandler={checkoutInputHandler} purchaseOrder={purchaseOrder}/>}/>
-          </Routes>
-        </BrowserRouter>
-        
-    </div>
+    <BasketContext.Provider value={basketItems}>
+      <div className="container text-center">
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<ItemList foodItems={foodItems} basketItems={basketItems} addToBasket={addToBasket} removeFromBasket={removeFromBasket} isLoggedIn={isLoggedIn} loginInput={loginInput} goToCheckout={goToCheckout} basketHandler={basketHandler} itemsForCheckout={itemsForCheckout}/>}/>
+              <Route path="/admin-dashboard" element={<AdminDashboard foodItems={foodItems} isLoggedIn={isLoggedIn} loginInput={loginInput} newProduct={newProduct} newProductHandler={newProductHandler} addProduct={addProduct} deleteProduct={deleteProduct}/>}/> 
+              <Route path="/admin-login" element={isLoggedIn === true ? <Navigate to="/admin-dashboard"/> : <AdminLogin loginInput={loginInput} loginInputHandler={loginInputHandler} loginToPortal={loginToPortal}/>}/>
+              <Route path="/password-reset" element={ <PasswordReset loginInput={loginInput} loginInputHandler={loginInputHandler} userExists={userExists} isLoggedIn={isLoggedIn} newPasswordHandler={newPasswordHandler} newPassword={newPassword} resetPassword={resetPassword}/>}/>
+              <Route path="/checkout" element={<Checkout basketItems={basketItems} checkoutInput={checkoutInput} checkoutInputHandler={checkoutInputHandler} purchaseOrder={purchaseOrder}/>}/>
+              <Route path="checkout-success" element={ <Success orders={orders} checkoutInput={checkoutInput}/> } />
+            </Routes>
+          </BrowserRouter>
+      </div>
+    </BasketContext.Provider>
   );
 }
 
