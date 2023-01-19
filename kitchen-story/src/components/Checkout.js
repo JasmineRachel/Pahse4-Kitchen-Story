@@ -10,8 +10,11 @@ export default function Checkout(props) {
 
   return (
     <div className="container">
-        <h2> Checkout </h2>
+        
         <Nav/>
+        <br></br>
+        <h2> Checkout </h2>
+        <br></br>
         {console.log("basket items @ checkout", basketProducts)}
         <form onSubmit={(e) => purchaseOrder(e, basketProducts)} style={{margin: "auto",  width: "500px"}}>
             <label htmlFor="fullname" className="form-label">Full Name</label>
